@@ -1,10 +1,10 @@
-import os
-from dotenv import load_dotenv
+#import os
+#from dotenv import load_dotenv
 import json
 import requests
 import streamlit as st
 
-load_dotenv()
+#load_dotenv()
 
 #api = os.environ.get("API")
 api = st.secrets["API"]

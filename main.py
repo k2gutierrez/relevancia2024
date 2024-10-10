@@ -88,7 +88,8 @@ consejo4 = ["Mario Humberto García", "David Félix", "Emilio Sánchez", "Ildefo
 consejo5 = ["Roberto Becerra", "Fernando Oropeza", "Germán Vázquez", "Julián Cajigas", "Ronald Ramírez"]
 consejo6 = ["Alfonso Pompa", "Francisco Madero", "José Maldonado", "Marissa De la Rosa", "Óscar Sánchez Osuna"]
 
-st.title(":blue[Encuesta de Relevancia] septiembre-octubre :pencil:")
+st.title(":blue[Encuesta de Relevancia] :pencil:")
+st.subheader("septiembre-octubre")
 consejo = st.selectbox("Selecciona tu Consejo", ("Consejos", "Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Consejo 3. Juan Carlos Ruvalcaba", 
                                                  "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa"))
 

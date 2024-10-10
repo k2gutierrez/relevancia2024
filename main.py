@@ -82,6 +82,7 @@ consejos = ["Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Cons
 coaches = ["Dunia Guzman", "José Luis Rodríguez", "Juan Carlos Ruvalcaba", "Mario Humberto García", "Roberto Becerra", "Alfonso Pompa"]
 
 consejo1 = ["Dunia Guzman", "Gabriela Sánchez", "Héctor Arias", "José Antonio Carballar"]
+email1 = ["dguzman@akator.com", "gabriela.sanchez@dportenis.com.mx", "hector.arias.solorzano@gmail.com", "jose.antonio.carballar@accyflor.mx"]
 consejo2 = ["José Luis Rodríguez", "Christian Flores", "Lucía Félix", "Nicolás Sañudo"]
 consejo3 = ["Juan Carlos Ruvalcaba", "Armando Flores", "José Miguel Fernández", "Óscar Sánchez Reyes", "Rodolfo Becerra"]
 consejo4 = ["Mario Humberto García", "David Félix", "Emilio Sánchez", "Ildefonso Aviléz", "Marco Flores"]
@@ -97,84 +98,128 @@ if consejo == "Consejo 1. Dunia Guzman":
     encuestado = st.selectbox("Selecciona tu nombre", ("-----", "Dunia Guzman", "Gabriela Sánchez", "Héctor Arias", "José Antonio Carballar"))
     relevante = None
     menos_relevante = None
+
+    sendStatus = True
     if encuestado == "Dunia Guzman":
-        consejoR = consejo1[1:4]
-        consejoNR = consejo1[1:4]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        if relevante == "Gabriela Sánchez":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+        email = st.text_input("Ingresa el email con el que te registraste al Máster:", value="")
+        indexNombre = consejo1.index(encuestado)
         
-        elif relevante == "Héctor Arias":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+        if st.button("Verificar email"):
+            if email == email1[indexNombre]:
+                emailStatus = True
+                sendStatus = False
 
-        elif relevante == "José Antonio Carballar":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                consejoR = consejo1[1:4]
+                consejoNR = consejo1[1:4]
+                st.divider()
+                relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
+                st.divider()
+                if relevante == "Gabriela Sánchez":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                
+                elif relevante == "Héctor Arias":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
 
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                elif relevante == "José Antonio Carballar":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
 
+                else:
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+            else:
+                st.error("El email ingresado no coincide con el que usaste para el registro al Máster")
     
     elif encuestado == "Gabriela Sánchez":
-        consejoR = consejo1[2:4]
-        consejoNR = consejo1[2:4]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
+        email = st.text_input("Ingresa el email con el que te registraste al Máster:", value="")
+        indexNombre = consejo1.index(encuestado)
         
-        if relevante == "Héctor Arias":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+        if st.button("Verificar email"):
+            if email == email1[indexNombre]:
+                emailStatus = True
+                sendStatus = False
 
-        elif relevante == "José Antonio Carballar":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                consejoR = consejo1[2:4]
+                consejoNR = consejo1[2:4]
+                st.divider()
+                relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
+                st.divider()
+                
+                if relevante == "Héctor Arias":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
 
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                elif relevante == "José Antonio Carballar":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+
+                else:
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+            else:
+                st.error("El email ingresado no coincide con el que usaste para el registro al Máster")
 
     
     elif encuestado == "Héctor Arias":
-        consejoR = ["Gabriela Sánchez", "José Antonio Carballar"]
-        consejoNR = ["Gabriela Sánchez", "José Antonio Carballar"]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        if relevante == "Gabriela Sánchez":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-        
-        elif relevante == "José Antonio Carballar":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
 
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+        email = st.text_input("Ingresa el email con el que te registraste al Máster:", value="")
+        indexNombre = consejo1.index(encuestado)
+        
+        if st.button("Verificar email"):
+            if email == email1[indexNombre]:
+                emailStatus = True
+                sendStatus = False
+
+                consejoR = ["Gabriela Sánchez", "José Antonio Carballar"]
+                consejoNR = ["Gabriela Sánchez", "José Antonio Carballar"]
+                st.divider()
+                relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
+                st.divider()
+                if relevante == "Gabriela Sánchez":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                
+                elif relevante == "José Antonio Carballar":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+
+                else:
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+
+            else:
+                st.error("El email ingresado no coincide con el que usaste para el registro al Máster")
 
 
     elif encuestado == "José Antonio Carballar":
-        consejoR = ["Gabriela Sánchez", "Héctor Arias"]
-        consejoNR = ["Gabriela Sánchez", "Héctor Arias"]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        if relevante == "Gabriela Sánchez":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+        email = st.text_input("Ingresa el email con el que te registraste al Máster:", value="")
+        indexNombre = consejo1.index(encuestado)
         
-        elif relevante == "Héctor Arias":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+        if st.button("Verificar email"):
+            if email == email1[indexNombre]:
+                emailStatus = True
+                sendStatus = False
 
 
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                consejoR = ["Gabriela Sánchez", "Héctor Arias"]
+                consejoNR = ["Gabriela Sánchez", "Héctor Arias"]
+                st.divider()
+                relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
+                st.divider()
+                if relevante == "Gabriela Sánchez":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+                
+                elif relevante == "Héctor Arias":
+                    consejoNR.remove(relevante)
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+
+                else:
+                    menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
+
+            else:
+                st.error("El email ingresado no coincide con el que usaste para el registro al Máster")
     
-    if st.button("Enviar encuesta", type='secondary'):
+    if st.button("Enviar encuesta", type='secondary', disabled=sendStatus):
             send = sendRelevancia(consejo, encuestado, relevante, menos_relevante)
 
 
@@ -743,7 +788,8 @@ elif consejo == "Consejo 6. Alfonso Pompa":
         else:
             menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
     
-    if st.button("Enviar encuesta", type='secondary'):
+
+    if st.button("Enviar encuestas", type='secondary', disabled=True):
             send = sendRelevancia(consejo, encuestado, relevante, menos_relevante)
 
 

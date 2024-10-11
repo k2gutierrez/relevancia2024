@@ -799,7 +799,7 @@ elif consejo == "Consejo 6. Alfonso Pompa":
             menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
     
     email = st.text_input("Ingresa el email con el que te registraste al Máster:")
-    if st.button("Enviar encuestas", type='secondary', disabled=True):
+    if st.button("Enviar encuestas", type='secondary'):
             send = sendRelevancia(consejo, encuestado, relevante, menos_relevante, email)
 
 

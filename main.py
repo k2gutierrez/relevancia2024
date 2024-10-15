@@ -237,7 +237,7 @@ def calificacion(listfull, consejo):
                 if a["name"] == i["nombre"]:
                     return st.warning("Ya existen los registros en el tablero de monday!")
 
-            sendCali(7633182192, i["nombre"], consejo, i["final"])
+                sendCali(7633182192, i["nombre"], consejo, i["final"])
 
     
 

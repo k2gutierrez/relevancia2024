@@ -3,7 +3,6 @@
 import json
 import requests
 import streamlit as st
-
 #load_dotenv()
 
 #api = os.environ.get("API")
@@ -45,32 +44,32 @@ def sendRelevancia(consejo, encuestado, masR, menosR, email):
     try:
         if consejo == "Consejo 1. Dunia Guzman":
             verificador = consejo1.index(encuestado)
-            if email != email1[verificador]:
+            if email.lower() != email1[verificador]:
                 return st.error("El email no coincide con el que registraste para el Máster! Intenta nuevamente")
 
         if consejo == "Consejo 2. José Luis Rodríguez":
             verificador = consejo2.index(encuestado)
-            if email != email2[verificador]:
+            if email.lower() != email2[verificador]:
                 return st.error("El email no coincide con el que registraste para el Máster! Intenta nuevamente")
 
         if consejo == "Consejo 3. Juan Carlos Ruvalcaba":
             verificador = consejo3.index(encuestado)
-            if email != email3[verificador]:
+            if email.lower() != email3[verificador]:
                 return st.error("El email no coincide con el que registraste para el Máster! Intenta nuevamente")
 
         if consejo == "Consejo 4. Mario Humberto García":
             verificador = consejo4.index(encuestado)
-            if email != email4[verificador]:
+            if email.lower() != email4[verificador]:
                 return st.error("El email no coincide con el que registraste para el Máster! Intenta nuevamente")
 
         if consejo == "Consejo 5. Roberto Becerra":
             verificador = consejo5.index(encuestado)
-            if email != email5[verificador]:
+            if email.lower() != email5[verificador]:
                 return st.error("El email no coincide con el que registraste para el Máster! Intenta nuevamente")
 
         if consejo == "Consejo 6. Alfonso Pompa":
             verificador = consejo6.index(encuestado)
-            if email != email6[verificador]:
+            if email.lower() != email6[verificador]:
                 return st.error("El email no coincide con el que registraste para el Máster! Intenta nuevamente")
 
         id = consejos.index(consejo)
@@ -107,6 +106,94 @@ def sendRelevancia(consejo, encuestado, masR, menosR, email):
     except:
         return
 
+def sendCali(boardid, nombre, consejo, calificacion):
+    try:
+
+        query1 = 'mutation ($boardid: ID!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id:$boardid, item_name:$myItemName, column_values:$columnVals) { id } }'
+        vars = {
+            'boardid' : boardid,
+            'myItemName' : nombre, # nombre
+            'columnVals' : json.dumps({
+            'texto__1' : consejo, # más relevante
+            'texto_1__1' : calificacion, # menos relevante
+        })
+        }
+
+        data = {'query' : query1, 'variables' : vars}
+        r = requests.post(url=apiUrl, json=data, headers=headers) # make request
+        if r:
+            status = st.success("Calificaciones registradas con éxito")
+            return status
+    except:
+        return st.error("Ha ocurrido un error, intenta nuevamente")
+
+def getconsejos(ids, consejo, consejoNum):
+    consejo_actual = []
+    for i in consejo:
+        if i != consejo[0]:
+            consejo_actual.append(i)
+    query2 = '{boards(ids:'+ str(ids) +') { name id description items_page { items { name column_values{id type text } } } } }'
+
+    data = {'query' : query2}
+
+    r = requests.post(url=apiUrl, json=data, headers=headers) # make request
+
+    rf = r.json()
+
+    rf_list = rf["data"]["boards"][0]["items_page"]["items"]
+
+    if len(rf_list) < len(consejo):
+        return st.warning("Faltan personas por contestar la encuesta")
+    elif len(rf_list) > len(consejo):
+        return st.error("Hay más registros de calificaciones de lo esperado")
+
+    alumni = []
+    #st.write(rf_list)
+    for i in consejo_actual:
+        alumnis = {'nombre': i, 'calis': [], 'final': '0'}
+        alumni.append(alumnis)
+
+    for i in rf_list:
+        if i["column_values"][2]["text"] == "coach":
+            for a in alumni:
+                if a['nombre'] == i["column_values"][0]["text"]:
+                    a['calis'].append(100)
+                elif a['nombre'] == i["column_values"][1]["text"]:
+                    a['calis'].append(60)
+                else:
+                    a['calis'].append(80)
+        
+        if i["column_values"][2]["text"] == "alumno":
+            for a in alumni:
+                if a['nombre'] == i["column_values"][0]["text"]:
+                    a['calis'].append(100)
+                elif a['nombre'] == i["column_values"][1]["text"]:
+                    a['calis'].append(60)
+                else:
+                    a['calis'].append(80)
+    calificacion(alumni, ids, consejoNum)
+
+def calificacion(listfull, board, consejo):
+    for i in listfull:
+        nom = i["nombre"]
+        caliC = (i["calis"][0])
+        caliA = 0
+        ind = len(i["calis"])-1
+        for a in i["calis"]:
+            caliA += a
+        coach = caliC * .6
+        alumnos = ((caliA - caliC)/ind) * .4
+        total = coach + alumnos
+        i['final'] = str(total)
+        result = st.write(f"{nom}: {total}")
+    #return result
+    if st.button("Registrar en monday"):
+        for i in listfull:
+            sendCali(7633182192, i["nombre"], consejo, i["final"])
+
+    
+
+
 IDsConsejos = ['7601959436', '7605844793', '7605845746', '7605846147', '7605846488', '7605846943']
 consejos = ["Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Consejo 3. Juan Carlos Ruvalcaba", "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa"]
 coaches = ["Dunia Guzman", "José Luis Rodríguez", "Juan Carlos Ruvalcaba", "Mario Humberto García", "Roberto Becerra", "Alfonso Pompa"]
@@ -137,7 +224,7 @@ email6 = ["apompa@tec.mx", "francisco.madero17@gmail.com", "jmaldonado@gaservici
 st.title(":blue[Encuesta de Relevancia] :pencil:")
 st.subheader("septiembre-octubre")
 consejo = st.selectbox("Selecciona tu Consejo", ("Consejos", "Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Consejo 3. Juan Carlos Ruvalcaba", 
-                                                 "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa"))
+                                                 "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa", "Selecciona tu Consejo"))
 
 if consejo == "Consejo 1. Dunia Guzman":
     encuestado = st.selectbox("Selecciona tu nombre", ("-----", "Dunia Guzman", "Gabriela Sánchez", "Héctor Arias", "José Antonio Carballar"))
@@ -802,27 +889,34 @@ elif consejo == "Consejo 6. Alfonso Pompa":
     if st.button("Enviar encuestas", type='secondary'):
             send = sendRelevancia(consejo, encuestado, relevante, menos_relevante, email)
 
+elif consejo == "Selecciona tu Consejo":
+    coord = st.text_input("Introduce la contraseña:", value="")
+    if coord == "loreCedem2024":
+        coord_consejos = st.selectbox("Selecciona un Consejo", ("Consejos", "Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Consejo 3. Juan Carlos Ruvalcaba", 
+                                                "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa"))
 
+        if coord_consejos == "Consejo 1. Dunia Guzman":
+            getconsejos(IDsConsejos[0], consejo1, str(1))
+        
+        elif coord_consejos == "Consejo 2. José Luis Rodríguez":
+            getconsejos(IDsConsejos[1], consejo2, str(2))
 
+        elif coord_consejos == "Consejo 3. Juan Carlos Ruvalcaba":
+            getconsejos(IDsConsejos[2], consejo3, str(3))
 
+        elif coord_consejos == "Consejo 4. Mario Humberto García":
+            getconsejos(IDsConsejos[3], consejo4, str(4))
 
+        elif coord_consejos == "Consejo 5. Roberto Becerra":
+            getconsejos(IDsConsejos[4], consejo5, str(5))
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        elif coord_consejos == "Consejo 6. Alfonso Pompa":
+            getconsejos(IDsConsejos[5], consejo6, str(6))
+    
+    elif coord == "":
+        st.write("Aún no ingresas la clave")
+    else:
+        st.error("Contraseña incorrecta!")
 
 else:
     st.write("No se ha seleccionado un Consejo aún")
-

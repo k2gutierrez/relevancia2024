@@ -171,9 +171,9 @@ def getconsejos(ids, consejo, consejoNum):
                     a['calis'].append(60)
                 else:
                     a['calis'].append(80)
-    calificacion(alumni, ids, consejoNum)
+    calificacion(alumni, consejoNum)
 
-def calificacion(listfull, board, consejo):
+def calificacion(listfull, consejo):
     for i in listfull:
         nom = i["nombre"]
         caliC = (i["calis"][0])

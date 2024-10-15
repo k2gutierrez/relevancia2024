@@ -11,6 +11,11 @@ api = st.secrets["API"]
 apiUrl = "https://api.monday.com/v2"
 headers = {"Authorization" : api}
 
+st.set_page_config(
+    page_title="Euncet-Cedem",
+    page_icon="./triangulo.png",
+)
+
 #query = '{boards(limit:1) { name id description items_page { items { name column_values{id type text } } } } }'
 #data = {'query' : query}
 
@@ -74,6 +79,7 @@ def sendRelevancia(consejo, encuestado, masR, menosR, email):
 
         id = consejos.index(consejo)
         bId = IDsConsejos[id]
+
         tipo = ""
         if encuestado in coaches:
             tipo = "coach"
@@ -87,22 +93,52 @@ def sendRelevancia(consejo, encuestado, masR, menosR, email):
             status= st.error("No seleccionaste a nadie como el menos relevante")
             return status
 
-        query5 = 'mutation ($boardid: ID!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id:$boardid, item_name:$myItemName, column_values:$columnVals) { id } }'
-        vars = {
-            'boardid' : bId,
-            'myItemName' : encuestado, # nombre
-            'columnVals' : json.dumps({
-            'texto__1' : masR, # más relevante
-            'dup__of_m_s_relevante__1' : menosR, # menos relevante
-            'texto8__1' : tipo # tipo
-        })
-        }
+        ## Verificación de registro en tablero
+        q = '{boards(ids: '+ bId +') { name id description items_page { items { name column_values{id type text } } } } }'
+        data = {'query' : q}
+        res = requests.post(url=apiUrl, json=data, headers=headers) # make request
+        res_json = res.json()
+        res_list = res_json["data"]["boards"][0]["items_page"]["items"]
+        
+        if len(res_list) == 0:
+            query5 = 'mutation ($boardid: ID!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id:$boardid, item_name:$myItemName, column_values:$columnVals) { id } }'
+            vars = {
+                'boardid' : bId,
+                'myItemName' : encuestado, # nombre
+                'columnVals' : json.dumps({
+                'texto__1' : masR, # más relevante
+                'dup__of_m_s_relevante__1' : menosR, # menos relevante
+                'texto8__1' : tipo # tipo
+            })
+            }
 
-        data = {'query' : query5, 'variables' : vars}
-        r = requests.post(url=apiUrl, json=data, headers=headers) # make request
-        if r:
-            status = st.success("Se ha registrado exitosamente!")
-            return status
+            data = {'query' : query5, 'variables' : vars}
+            r = requests.post(url=apiUrl, json=data, headers=headers) # make request
+            if r:
+                status = st.success("Se ha registrado exitosamente!")
+                return status
+        
+        else:
+            for i in res_list:
+                if i["name"] == encuestado:
+                    return st.warning("Ya has realizado la encuesta!")
+            
+            query5 = 'mutation ($boardid: ID!, $myItemName: String!, $columnVals: JSON!) { create_item (board_id:$boardid, item_name:$myItemName, column_values:$columnVals) { id } }'
+            vars = {
+                'boardid' : bId,
+                'myItemName' : encuestado, # nombre
+                'columnVals' : json.dumps({
+                'texto__1' : masR, # más relevante
+                'dup__of_m_s_relevante__1' : menosR, # menos relevante
+                'texto8__1' : tipo # tipo
+            })
+            }
+
+            data = {'query' : query5, 'variables' : vars}
+            r = requests.post(url=apiUrl, json=data, headers=headers) # make request
+            if r:
+                status = st.success("Se ha registrado exitosamente!")
+                return status
     except:
         return
 
@@ -188,7 +224,19 @@ def calificacion(listfull, consejo):
         result = st.write(f"{nom}: {total}")
     #return result
     if st.button("Registrar en monday"):
+        newquery = '{boards(ids: 7633182192) { name id description items_page { items { name column_values{id type text } } } } }'
+        data = {'query' : newquery}
+        r = requests.post(url=apiUrl, json=data, headers=headers) # make request
+        rf = r.json()
+        rf_list = rf["data"]["boards"][0]["items_page"]["items"]
         for i in listfull:
+            if len(rf_list) == 0:
+                sendCali(7633182192, i["nombre"], consejo, i["final"])
+            
+            for a in rf_list:
+                if a["name"] == i["nombre"]:
+                    return st.warning("Ya existen los registros en el tablero de monday!")
+
             sendCali(7633182192, i["nombre"], consejo, i["final"])
 
     

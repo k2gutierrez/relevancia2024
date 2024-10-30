@@ -185,28 +185,48 @@ def getconsejos(ids, consejo, consejoNum):
 
     alumni = []
     #st.write(rf_list)
+
     for i in consejo_actual:
         alumnis = {'nombre': i, 'calis': [], 'final': '0'}
         alumni.append(alumnis)
 
-    for i in rf_list:
-        if i["column_values"][2]["text"] == "coach":
-            for a in alumni:
-                if a['nombre'] == i["column_values"][0]["text"]:
-                    a['calis'].append(100)
-                elif a['nombre'] == i["column_values"][1]["text"]:
-                    a['calis'].append(60)
-                else:
-                    a['calis'].append(80)
-        
-        if i["column_values"][2]["text"] == "alumno":
-            for a in alumni:
-                if a['nombre'] == i["column_values"][0]["text"]:
-                    a['calis'].append(100)
-                elif a['nombre'] == i["column_values"][1]["text"]:
-                    a['calis'].append(60)
-                else:
-                    a['calis'].append(80)
+    if len(alumni) == 3:
+        for i in rf_list:
+            if i["column_values"][2]["text"] == "coach":
+                for a in alumni:
+                    if a['nombre'] == i["column_values"][0]["text"]:
+                        a['calis'].insert(0, 100)
+                    elif a['nombre'] == i["column_values"][1]["text"]:
+                        a['calis'].insert(0, 60)
+                    else:
+                        a['calis'].insert(0, 80)
+            
+            elif i["column_values"][2]["text"] == "alumno":
+                for a in alumni:
+                    if a['nombre'] == i["column_values"][0]["text"]:
+                        a['calis'].append(100)
+                    elif a['nombre'] == i["column_values"][1]["text"]:
+                        a['calis'].append(60)
+
+    elif len(alumni) > 3:
+        for i in rf_list:
+            if i["column_values"][2]["text"] == "coach":
+                for a in alumni:
+                    if a['nombre'] == i["column_values"][0]["text"]:
+                        a['calis'].insert(0, 100)
+                    elif a['nombre'] == i["column_values"][1]["text"]:
+                        a['calis'].insert(0, 60)
+                    else:
+                        a['calis'].insert(0, 80)
+            
+            elif i["column_values"][2]["text"] == "alumno":
+                for a in alumni:
+                    if a['nombre'] == i["column_values"][0]["text"]:
+                        a['calis'].append(100)
+                    elif a['nombre'] == i["column_values"][1]["text"]:
+                        a['calis'].append(60)
+                    else:
+                        a['calis'].append(80)
     calificacion(alumni, consejoNum)
 
 def calificacion(listfull, consejo):
@@ -968,3 +988,10 @@ elif consejo == "Selecciona tu Consejo":
 
 else:
     st.write("No se ha seleccionado un Consejo aún")
+
+### test de grupos
+#que = '{boards(ids: 7605845746) { groups { title id } name id description items_page { items { name column_values{id type text } } } } }'  # name id description items_page { items { name column_values{id type text } } }
+#data = {'query' : que}
+#r = requests.post(url=apiUrl, json=data, headers=headers) # make request
+#rf = r.json()
+#st.write(rf)

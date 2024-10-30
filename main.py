@@ -289,7 +289,7 @@ email6 = ["apompa@tec.mx", "francisco.madero17@gmail.com", "jmaldonado@gaservici
 
 
 
-st.title(":blue[Encuesta de Relevancia] :pencil:")
+st.title(":blue[Evaluación de Relevancia] :pencil:")
 st.subheader("septiembre-octubre")
 consejo = st.selectbox("Selecciona tu Consejo", ("Consejos", "Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Consejo 3. Juan Carlos Ruvalcaba", 
                                                  "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa", "Selecciona tu Consejo"))

@@ -292,7 +292,7 @@ email6 = ["apompa@tec.mx", "francisco.madero17@gmail.com", "jmaldonado@gaservici
 
 st.title(":blue[Evaluación de Relevancia] :pencil:")
 st.subheader("Abril")
-consejo = st.selectbox("Selecciona tu Consejo", ("Consejos", "Consejo 1. Dunia Guzman", "Consejo 2. José Luis Rodríguez", "Consejo 3. Juan Carlos Ruvalcaba", 
+consejo = st.selectbox("Selecciona tu Consejo", ("Consejos", "Consejo 1. Dunia Guzman", "Consejo 3. Juan Carlos Ruvalcaba", 
                                                  "Consejo 4. Mario Humberto García", "Consejo 5. Roberto Becerra", "Consejo 6. Alfonso Pompa", "Selecciona tu Consejo"))
 
 if consejo == "Consejo 1. Dunia Guzman":
@@ -385,90 +385,7 @@ if consejo == "Consejo 1. Dunia Guzman":
             send = sendRelevancia(consejo, encuestado, relevante, menos_relevante, email)
 
 
-elif consejo == "Consejo 2. José Luis Rodríguez":
-    encuestado = st.selectbox("Selecciona tu nombre", ("-----", "José Luis Rodríguez", "Christian Flores", "Lucía Félix", "Nicolás Sañudo"))
-    relevante = None
-    menos_relevante = None
-    if encuestado == "José Luis Rodríguez":
-        consejoR = consejo2[1:4]
-        consejoNR = consejo2[1:4]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        if relevante == "Christian Flores":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-        
-        elif relevante == "Lucía Félix":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
 
-        elif relevante == "Nicolás Sañudo":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-    
-    elif encuestado == "Christian Flores":
-        consejoR = consejo2[2:4]
-        consejoNR = consejo2[2:4]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        
-        if relevante == "Lucía Félix":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-        elif relevante == "Nicolás Sañudo":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-    
-    elif encuestado == "Lucía Félix":
-        consejoR = ["Christian Flores", "Nicolás Sañudo"]
-        consejoNR = ["Christian Flores", "Nicolás Sañudo"]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        if relevante == "Christian Flores":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-        
-        elif relevante == "Nicolás Sañudo":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-
-    elif encuestado == "Nicolás Sañudo":
-        consejoR = consejo2[1:3]
-        consejoNR = consejo2[1:3]
-        st.divider()
-        relevante = st.radio("Selecciona al más relevante", consejoR, index=None, horizontal=False)
-        st.divider()
-        if relevante == "Christian Flores":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-        
-        elif relevante == "Lucía Félix":
-            consejoNR.remove(relevante)
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-
-
-        else:
-            menos_relevante = st.radio("Selecciona al menos relevante", consejoNR, index=None, horizontal=False)
-    
-    email = st.text_input("Ingresa el email con el que te registraste al Máster:")
-    if st.button("Enviar encuesta", type='secondary'):
-            send = sendRelevancia(consejo, encuestado, relevante, menos_relevante, email)
 
 
 elif consejo == "Consejo 3. Juan Carlos Ruvalcaba":
